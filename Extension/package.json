@@ -1,6 +1,6 @@
 {
-  "name": "vstodo",
-  "displayName": "VSToDo",
+  "name": "aireviewer",
+  "displayName": "AI_Reviewer",
   "description": "Keeping track of stuff",
   "version": "0.0.1",
   "engines": {
@@ -16,8 +16,8 @@
       "activitybar": [
         {
           "id": "vstodo-sidebar-view",
-          "title": "VSTodo",
-          "icon": "media/checklist.svg"
+          "title": "AI_Reviewer",
+          "icon": "media/AI_Bot.svg"
         }
       ]
     },
@@ -26,22 +26,13 @@
         {
           "type": "webview",
           "id": "vstodo-sidebar",
-          "name": "VSTodo",
-          "icon": "media/checklist.svg",
-          "contextualTitle": "VsTodo"
+          "name": "AI_Reviewer",
+          "icon": "media/AI_Bot.svg",
+          "contextualTitle": "AI_Reviewer"
         }
       ]
     },
     "commands": [
-      {
-        "command": "vstodo.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "vstodo.askQuestion",
-        "category": "VSTodo",
-        "title": "Ask Question"
-      },
       {
         "command": "vstodo.refresh",
         "category": "VSTodo",

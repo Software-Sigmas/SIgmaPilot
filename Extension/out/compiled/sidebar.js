@@ -110,6 +110,16 @@ var app = (function () {
 	}
 
 	/**
+	 * @returns {(event: any) => any} */
+	function prevent_default(fn) {
+		return function (event) {
+			event.preventDefault();
+			// @ts-ignore
+			return fn.call(this, event);
+		};
+	}
+
+	/**
 	 * @param {Element} element
 	 * @returns {ChildNode[]}
 	 */
@@ -714,6 +724,7 @@ var app = (function () {
 	function create_fragment(ctx) {
 		let div0;
 		let t1;
+		let form;
 		let input;
 		let t2;
 		let div1;
@@ -733,6 +744,7 @@ var app = (function () {
 				div0 = element("div");
 				div0.textContent = "Question";
 				t1 = space();
+				form = element("form");
 				input = element("input");
 				t2 = space();
 				div1 = element("div");
@@ -746,10 +758,11 @@ var app = (function () {
 				button = element("button");
 				button.textContent = "Answer";
 				add_location(div0, file, 7, 0, 107);
-				add_location(input, file, 9, 0, 128);
-				add_location(div1, file, 11, 0, 160);
-				add_location(div2, file, 12, 0, 192);
-				add_location(button, file, 13, 0, 220);
+				add_location(input, file, 13, 4, 233);
+				add_location(form, file, 9, 0, 128);
+				add_location(div1, file, 17, 0, 275);
+				add_location(div2, file, 18, 0, 307);
+				add_location(button, file, 20, 0, 336);
 			},
 			l: function claim(nodes) {
 				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -757,7 +770,8 @@ var app = (function () {
 			m: function mount(target, anchor) {
 				insert_dev(target, div0, anchor);
 				insert_dev(target, t1, anchor);
-				insert_dev(target, input, anchor);
+				insert_dev(target, form, anchor);
+				append_dev(form, input);
 				set_input_value(input, /*question*/ ctx[1]);
 				insert_dev(target, t2, anchor);
 				insert_dev(target, div1, anchor);
@@ -773,7 +787,8 @@ var app = (function () {
 				if (!mounted) {
 					dispose = [
 						listen_dev(input, "input", /*input_input_handler*/ ctx[2]),
-						listen_dev(button, "click", /*click_handler*/ ctx[3], false, false, false, false)
+						listen_dev(form, "submit", prevent_default(/*submit_handler*/ ctx[3]), false, true, false, false),
+						listen_dev(button, "click", /*click_handler*/ ctx[4], false, false, false, false)
 					];
 
 					mounted = true;
@@ -793,7 +808,7 @@ var app = (function () {
 				if (detaching) {
 					detach_dev(div0);
 					detach_dev(t1);
-					detach_dev(input);
+					detach_dev(form);
 					detach_dev(t2);
 					detach_dev(div1);
 					detach_dev(t5);
@@ -836,8 +851,12 @@ var app = (function () {
 			$$invalidate(1, question);
 		}
 
-		const click_handler = () => {
+		const submit_handler = () => {
 			$$invalidate(0, answer = 'AI generated prompt goes here');
+		};
+
+		const click_handler = () => {
+			$$invalidate(0, answer = 'second prompt');
 		};
 
 		$$self.$capture_state = () => ({ todos, answer, text, question });
@@ -853,7 +872,7 @@ var app = (function () {
 			$$self.$inject_state($$props.$$inject);
 		}
 
-		return [answer, question, input_input_handler, click_handler];
+		return [answer, question, input_input_handler, submit_handler, click_handler];
 	}
 
 	class Sidebar extends SvelteComponentDev {

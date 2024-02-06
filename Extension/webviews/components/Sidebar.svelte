@@ -9,12 +9,19 @@
 
 <div>Question</div>
 
-<input bind:value={question}/>
+<form 
+    on:submit|preventDefault={() =>{
+        answer = 'AI generated prompt goes here'
+    }}>
+    <input bind:value={question}/> 
+</form>
+
 
 <div>Question: {question}</div>
 <div>Answer: {answer}</div>
+
 <button on:click={()=>{
-    answer = 'AI generated prompt goes here'
+    answer = 'second prompt'
 }}>Answer</button>
 
 

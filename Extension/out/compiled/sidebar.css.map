@@ -1,12 +1,8 @@
 {
   "version": 3,
   "file": "sidebar.css",
-  "sources": [
-    "Sidebar.svelte"
-  ],
-  "sourcesContent": [
-    "<script lang=\"ts\">let todos = [];\nlet answer = '';\nlet text = '';\nlet question = '';\nexport {};\n</script>\n\n<style>\n    .complete{\n        text-decoration: line-through;\n    }\n</style>\n\n<div>Question</div>\n\n<input bind:value={question}/>\n\n<div>Question: {question}</div>\n<div>Answer: {asnwer}</div>\n<button on:click={()=>{\n    asnwer = 'AI generated prompt goes here'\n}}>Answer</button>\n\n\n\n<form \n    on:submit|preventDefault={() =>{\n        todos = [{text, completed: false}, ...todos]\n        text = '';\n    }}>\n    <input bind:value={text}/> \n</form>\n\n<ul>\n    {#each todos as todo (todo.text)}\n        <li\n        class:complete={todo.completed}\n            on:click={()=>{\n                todo.completed = !todo.completed;\n            }}>\n            {todo.text}\n        </li>\n    {/each}\n</ul>\n\n<button on:click={()=>{\n        tsvscode.postMessage({type: 'onInfo',value: 'info message'});\n    }}>click me</button>\n\n<button on:click={()=>{\n        tsvscode.postMessage({type: 'onError',value: 'error message'});\n    }}>click me for error</button>\n\n"
-  ],
+  "sources": [],
+  "sourcesContent": [],
   "names": [],
-  "mappings": "AAQI,uBAAS,CACL,eAAe,CAAE,YACrB"
+  "mappings": ""
 }
