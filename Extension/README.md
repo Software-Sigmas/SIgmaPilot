@@ -1,6 +1,6 @@
-# ai-code-reviewer README
+# vstodo README
 
-This is the README for your extension "ai-code-reviewer". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "vstodo". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
@@ -15,6 +15,10 @@ For example if there is an image subfolder under your extension project workspac
 ## Requirements
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+
+Run:
+
+npm install -D rollup-plugin-svelte @rollup/plugin-node-resolve @rollup/plugin-commonjs rollup-plugin-terser svelte-preprocess @rollup/plugin-typescript rollup
 
 ## Extension Settings
 
@@ -69,6 +73,3 @@ You can author your README using Visual Studio Code. Here are some useful editor
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
-# ai-code-reviewer
-# AI_Code-Reviewer
-# AI_Code-Reviewer
