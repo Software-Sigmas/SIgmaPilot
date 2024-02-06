@@ -3,6 +3,8 @@ import pandas as pd
 # import signal
 from openai import OpenAI
 from tqdm import tqdm
+import threading
+
 
 # Function to handle the timeout
 def handler(signum, frame):
