@@ -804,23 +804,23 @@ var app = (function () {
 
 	function get_each_context(ctx, list, i) {
 		const child_ctx = ctx.slice();
-		child_ctx[9] = list[i];
+		child_ctx[10] = list[i];
 		return child_ctx;
 	}
 
-	// (45:1) {#each options as option}
+	// (80:1) {#each options as option}
 	function create_each_block(ctx) {
 		let option_1;
-		let t_value = /*option*/ ctx[9] + "";
+		let t_value = /*option*/ ctx[10] + "";
 		let t;
 
 		const block = {
 			c: function create() {
 				option_1 = element("option");
 				t = text(t_value);
-				option_1.__value = /*option*/ ctx[9];
+				option_1.__value = /*option*/ ctx[10];
 				set_input_value(option_1, option_1.__value);
-				add_location(option_1, file, 45, 2, 1256);
+				add_location(option_1, file, 80, 2, 2381);
 			},
 			m: function mount(target, anchor) {
 				insert_dev(target, option_1, anchor);
@@ -838,7 +838,7 @@ var app = (function () {
 			block,
 			id: create_each_block.name,
 			type: "each",
-			source: "(45:1) {#each options as option}",
+			source: "(80:1) {#each options as option}",
 			ctx
 		});
 
@@ -911,27 +911,27 @@ var app = (function () {
 				t13 = space();
 				div4 = element("div");
 				t14 = text(/*answer*/ ctx[0]);
-				add_location(div0, file, 34, 0, 931);
+				add_location(div0, file, 69, 0, 2056);
 				attr_dev(input, "placeholder", "Optional");
 				input.disabled = input_disabled_value = /*selectedOption*/ ctx[3] != '';
-				add_location(input, file, 37, 1, 1005);
-				add_location(form0, file, 36, 0, 960);
-				add_location(div1, file, 40, 0, 1102);
+				add_location(input, file, 72, 1, 2130);
+				add_location(form0, file, 71, 0, 2085);
+				add_location(div1, file, 75, 0, 2227);
 				option_1.__value = "";
 				set_input_value(option_1, option_1.__value);
 				option_1.selected = true;
-				add_location(option_1, file, 43, 1, 1172);
-				if (/*selectedOption*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[6].call(select));
-				add_location(select, file, 42, 0, 1133);
-				add_location(div2, file, 49, 0, 1321);
+				add_location(option_1, file, 78, 1, 2297);
+				if (/*selectedOption*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[7].call(select));
+				add_location(select, file, 77, 0, 2258);
+				add_location(div2, file, 84, 0, 2446);
 				attr_dev(textarea, "id", "mytextarea");
 				attr_dev(textarea, "placeholder", "Optional");
 				attr_dev(textarea, "class", "svelte-kwez1x");
-				add_location(textarea, file, 52, 1, 1386);
-				add_location(form1, file, 51, 0, 1341);
-				add_location(div3, file, 55, 0, 1503);
-				add_location(button, file, 57, 0, 1525);
-				add_location(div4, file, 63, 0, 1626);
+				add_location(textarea, file, 87, 1, 2511);
+				add_location(form1, file, 86, 0, 2466);
+				add_location(div3, file, 90, 0, 2628);
+				add_location(button, file, 92, 0, 2650);
+				add_location(div4, file, 98, 0, 2729);
 			},
 			l: function claim(nodes) {
 				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -971,13 +971,13 @@ var app = (function () {
 
 				if (!mounted) {
 					dispose = [
-						listen_dev(input, "input", /*input_input_handler*/ ctx[5]),
+						listen_dev(input, "input", /*input_input_handler*/ ctx[6]),
 						listen_dev(form0, "submit", prevent_default(submit_handler), false, true, false, false),
-						listen_dev(select, "change", /*select_change_handler*/ ctx[6]),
-						listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[7]),
+						listen_dev(select, "change", /*select_change_handler*/ ctx[7]),
+						listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[8]),
 						listen_dev(textarea, "input", resizeTextarea, false, false, false, false),
 						listen_dev(form1, "submit", prevent_default(submit_handler_1), false, true, false, false),
-						listen_dev(button, "click", /*click_handler*/ ctx[8], false, false, false, false)
+						listen_dev(button, "click", /*click_handler*/ ctx[9], false, false, false, false)
 					];
 
 					mounted = true;
@@ -1065,6 +1065,9 @@ var app = (function () {
 		return block;
 	}
 
+	const EFFICIENCY_PROMPT = 'Analyze for efficiency:\n';
+	const FORMATTING_PROMPT = 'Analyze for formatting:\n';
+	const EXPLANATION_PROMPT = 'Explain the code:\n';
 	const MAXHEIGHT = 200;
 
 	// resize text area based on text amount
@@ -1100,7 +1103,7 @@ var app = (function () {
 		let selectedOption = '';
 		const options = ['Formatting', 'Efficiency', 'Explanation'];
 
-		// listen to keyboard commands
+		// recieve commands from webview
 		window.addEventListener('message', event => {
 			const message = event.data;
 
@@ -1109,8 +1112,47 @@ var app = (function () {
 					$$invalidate(2, code = message.code);
 					setTimeout(resizeTextarea, 0);
 					break;
+				case 'quickReview':
+					$$invalidate(2, code = message.code);
+					$$invalidate(1, prompt = '');
+					$$invalidate(3, selectedOption = 'Explanation');
+					setTimeout(resizeTextarea, 0);
+					generateResponse();
+					break;
+				case 'modelResponse':
+					$$invalidate(0, answer = message.answer);
+					break;
 			}
 		});
+
+		function generateResponse() {
+			let finalPrompt = 'Hello World';
+
+			switch (selectedOption) {
+				case 'Formatting':
+					finalPrompt = FORMATTING_PROMPT;
+					break;
+				case 'Efficiency':
+					finalPrompt = EFFICIENCY_PROMPT;
+					break;
+				case 'Explanation':
+					finalPrompt = EXPLANATION_PROMPT;
+					break;
+				case '':
+					finalPrompt = prompt + '\n';
+					break;
+				default:
+					finalPrompt = EXPLANATION_PROMPT;
+					break;
+			}
+
+			finalPrompt = finalPrompt + code;
+
+			tsvscode.postMessage({
+				type: 'generateResponse',
+				value: finalPrompt
+			});
+		}
 
 		const writable_props = [];
 
@@ -1135,17 +1177,21 @@ var app = (function () {
 		}
 
 		const click_handler = () => {
-			$$invalidate(0, answer = 'AI generated answer goes here');
+			generateResponse();
 		};
 
 		$$self.$capture_state = () => ({
+			EFFICIENCY_PROMPT,
+			FORMATTING_PROMPT,
+			EXPLANATION_PROMPT,
 			MAXHEIGHT,
 			answer,
 			prompt,
 			code,
 			selectedOption,
 			options,
-			resizeTextarea
+			resizeTextarea,
+			generateResponse
 		});
 
 		$$self.$inject_state = $$props => {
@@ -1165,6 +1211,7 @@ var app = (function () {
 			code,
 			selectedOption,
 			options,
+			generateResponse,
 			input_input_handler,
 			select_change_handler,
 			textarea_input_handler,

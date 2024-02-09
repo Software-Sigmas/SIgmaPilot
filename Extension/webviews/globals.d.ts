@@ -5,3 +5,4 @@ declare global {
         postMessage: ({type: string, value: any })=> void
     };
 }
+

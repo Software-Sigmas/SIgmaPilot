@@ -1,4 +1,7 @@
 <script lang="ts">
+	const EFFICIENCY_PROMPT = 'Analyze for efficiency:\n';
+	const FORMATTING_PROMPT = 'Analyze for formatting:\n';
+	const EXPLANATION_PROMPT = 'Explain the code:\n';
 	const MAXHEIGHT = 200;
 	let answer = '';
 	let prompt = '';
@@ -21,7 +24,7 @@
 		target.style.height = `${Math.min(target.scrollHeight, MAXHEIGHT)}px`;
 	}
 
-	// listen to keyboard commands
+	// recieve commands from webview
 	window.addEventListener('message', (event) => {
 		const message = event.data;
 		switch (message.command) {
@@ -29,8 +32,41 @@
 				code = message.code;
 				setTimeout(resizeTextarea, 0);
 				break;
+			case 'quickReview':
+				code = message.code;
+				prompt = '';
+				selectedOption = 'Explanation';
+				setTimeout(resizeTextarea, 0);
+				generateResponse();
+				break;
+			case 'modelResponse':
+				answer = message.answer;
+				break;
 		}
 	});
+
+	function generateResponse() {
+		let finalPrompt = 'Hello World';
+		switch (selectedOption) {
+			case 'Formatting':
+				finalPrompt = FORMATTING_PROMPT;
+				break;
+			case 'Efficiency':
+				finalPrompt = EFFICIENCY_PROMPT;
+				break;
+			case 'Explanation':
+				finalPrompt = EXPLANATION_PROMPT;
+				break;
+			case '':
+				finalPrompt = prompt + '\n';
+				break;
+			default:
+				finalPrompt = EXPLANATION_PROMPT;
+				break;
+		}
+		finalPrompt = finalPrompt + code;
+		tsvscode.postMessage({ type: 'generateResponse', value: finalPrompt });
+	}
 </script>
 
 <div>Custom Prompt:</div>
@@ -58,7 +94,7 @@
 
 <button
 	on:click={() => {
-		answer = 'AI generated answer goes here';
+		generateResponse();
 	}}>Generate</button
 >
 

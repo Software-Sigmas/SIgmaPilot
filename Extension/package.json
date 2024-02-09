@@ -40,12 +40,21 @@
       {
         "command": "ai-reviewer.copySelectedCodeToSidebar",
         "title": "Copy Selected Code to Sidebar"
+      },
+      {
+        "command": "ai-reviewer.modelConnection",
+        "title": "Send message to model"
       }
     ],
     "keybindings": [
       {
         "command": "ai-reviewer.copySelectedCodeToSidebar",
         "key": "ctrl+shift+c",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "ai-reviewer.runQuickReview",
+        "key": "ctrl+shift+q",
         "when": "editorTextFocus"
       }
     ]
@@ -86,5 +95,8 @@
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "axios": "^1.6.7"
   }
 }

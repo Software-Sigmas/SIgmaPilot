@@ -43,6 +43,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           vscode.window.showErrorMessage(data.value);
           break;
         }
+        case "generateResponse": {
+          if (!data.value) {
+            return;
+          }
+          console.log(data.value);
+          await vscode.commands.executeCommand('ai-reviewer.modelConnection', data.value);
+          break;
+        }
       }
     });
   }
