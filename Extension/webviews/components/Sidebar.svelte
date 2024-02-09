@@ -1,51 +1,57 @@
 <script lang="ts">
+	const MAXHEIGHT = 200;
 	let answer = '';
 	let prompt = '';
 	let code = '';
-    let selectedOption = '';
+	let selectedOption = '';
 
-    const options = [
-        "Formatting",
-        "Efficiency",
-        "Security",
-        "Variable Naming",
-        "Explanation"
-    ];
+	const options = ['Formatting', 'Efficiency', 'Explanation'];
 
-    function resizeTextarea(event: Event) {
-       const target = event.target as HTMLTextAreaElement;
-        target.style.height = 'auto';
-        target.style.height = `${target.scrollHeight}px`;
-    }
+	// resize text area based on text amount
+	function resizeTextarea(event?: Event) {
+		let target: HTMLTextAreaElement;
+		if (event) {
+			target = event.target as HTMLTextAreaElement;
+		} else {
+			// Correctly select the textarea by its ID
+			target = document.getElementById('mytextarea') as HTMLTextAreaElement;
+		}
+		if (!target) return; // Exit if textarea is not found, for safety
+		target.style.height = 'auto';
+		target.style.height = `${Math.min(target.scrollHeight, MAXHEIGHT)}px`;
+	}
+
+	// listen to keyboard commands
+	window.addEventListener('message', (event) => {
+		const message = event.data;
+		switch (message.command) {
+			case 'setCode':
+				code = message.code;
+				setTimeout(resizeTextarea, 0);
+				break;
+		}
+	});
 </script>
 
 <div>Custom Prompt:</div>
 
-<form
-	on:submit|preventDefault={() => {
-		answer = 'AI generated result goes here';
-	}}
->
-	<input bind:value={prompt} placeholder="Optional" disabled={selectedOption != ""}/>
+<form on:submit|preventDefault={() => {}}>
+	<input bind:value={prompt} placeholder="Optional" disabled={selectedOption != ''} />
 </form>
 
 <div>Standard Prompt:</div>
 
 <select bind:value={selectedOption}>
-    <option value="" selected>Use Custom Prompt</option>
-    {#each options as option}
-        <option value={option}>{option}</option>
-    {/each}
+	<option value="" selected>Use Custom Prompt</option>
+	{#each options as option}
+		<option value={option}>{option}</option>
+	{/each}
 </select>
 
 <div>Code:</div>
 
-<form
-	on:submit|preventDefault={() => {
-		answer = 'AI generated result goes here';
-	}}
->
-	<textarea bind:value={code} on:input={resizeTextarea} rows="1" placeholder="Optional"></textarea>
+<form on:submit|preventDefault={() => {}}>
+	<textarea id="mytextarea" bind:value={code} on:input={resizeTextarea} placeholder="Optional"></textarea>
 </form>
 
 <div>Answer:</div>
@@ -56,13 +62,14 @@
 	}}>Generate</button
 >
 
-<div> {answer} </div>
+<div>{answer}</div>
 
 <style>
-    textarea {
-        width: 100%;
-        box-sizing: border-box; /* Ensures padding does not affect overall width */
-        overflow-y: hidden; /* Hides the scrollbar */
-        resize: none; /* Disables manual resizing */
-    }
+	textarea {
+		width: 100%;
+		box-sizing: border-box; /* Ensures padding does not affect overall width */
+		overflow-y: auto;
+		resize: none; /* Disables manual resizing */
+		max-height: 200px;
+	}
 </style>

@@ -8,36 +8,33 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 	context.subscriptions.push(
-	  vscode.window.registerWebviewViewProvider("vstodo-sidebar", sidebarProvider)
+	  vscode.window.registerWebviewViewProvider("ai-reviewer-sidebar", sidebarProvider)
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('vstodo.refresh', async () => {
+		vscode.commands.registerCommand('ai-reviewer.refresh', async () => {
 
 			await vscode.commands.executeCommand("workbench.action.closeSidebar");
-			await vscode.commands.executeCommand("workbench.view.extension.vstodo-sidebar-view");
-			
-			// setTimeout(()=> {
-			// 	vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
-			// }, 500);
+			await vscode.commands.executeCommand("workbench.view.extension.ai-reviewer-sidebar-view");
 		})
 	);
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand("vstodo.askQuestion", async ()=>{
-			const answer = await vscode.window.showInformationMessage(
-				"How was your day?",
-				"good",
-				"bad"
-			);
+	// keyboard shortcut command
+	let disposable = vscode.commands.registerCommand('ai-reviewer.copySelectedCodeToSidebar', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor) {
+            const selection = editor.selection;
+            const selectedText = editor.document.getText(selection);
+			// Send the selected text to the sidebar
+            sidebarProvider.postMessage({
+                command: 'setCode',
+                code: selectedText,
+            });
+        }
+    });
 
-			if (answer === "bad"){
-				vscode.window.showInformationMessage('Sorry to hear that!');
-			}else{
-				console.log({answer});
-			}
-		})
-	);
+    context.subscriptions.push(disposable);
+
 }
 
 // This method is called when your extension is deactivated

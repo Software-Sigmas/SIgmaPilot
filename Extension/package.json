@@ -1,6 +1,6 @@
 {
-  "name": "aireviewer",
-  "displayName": "AI_Reviewer",
+  "name": "ai-reviewer",
+  "displayName": "AI Reviewer",
   "description": "Keeping track of stuff",
   "version": "0.0.1",
   "engines": {
@@ -15,28 +15,38 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "vstodo-sidebar-view",
-          "title": "AI_Reviewer",
+          "id": "ai-reviewer-sidebar-view",
+          "title": "AI Reviewer",
           "icon": "media/AI_Bot.svg"
         }
       ]
     },
     "views": {
-      "vstodo-sidebar-view": [
+      "ai-reviewer-sidebar-view": [
         {
           "type": "webview",
-          "id": "vstodo-sidebar",
-          "name": "AI_Reviewer",
+          "id": "ai-reviewer-sidebar",
+          "name": "AI Reviewer",
           "icon": "media/AI_Bot.svg",
-          "contextualTitle": "AI_Reviewer"
+          "contextualTitle": "AI Reviewer"
         }
       ]
     },
     "commands": [
       {
-        "command": "vstodo.refresh",
-        "category": "VSTodo",
-        "title": "Refesh"
+        "command": "ai-reviewer.refresh",
+        "title": "Refresh"
+      },
+      {
+        "command": "ai-reviewer.copySelectedCodeToSidebar",
+        "title": "Copy Selected Code to Sidebar"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ai-reviewer.copySelectedCodeToSidebar",
+        "key": "ctrl+shift+c",
+        "when": "editorTextFocus"
       }
     ]
   },

@@ -36,23 +36,25 @@ const vscode = __importStar(__webpack_require__(1));
 const SidebarProvider_1 = __webpack_require__(2);
 function activate(context) {
     const sidebarProvider = new SidebarProvider_1.SidebarProvider(context.extensionUri);
-    context.subscriptions.push(vscode.window.registerWebviewViewProvider("vstodo-sidebar", sidebarProvider));
-    context.subscriptions.push(vscode.commands.registerCommand('vstodo.refresh', async () => {
+    context.subscriptions.push(vscode.window.registerWebviewViewProvider("ai-reviewer-sidebar", sidebarProvider));
+    context.subscriptions.push(vscode.commands.registerCommand('ai-reviewer.refresh', async () => {
         await vscode.commands.executeCommand("workbench.action.closeSidebar");
-        await vscode.commands.executeCommand("workbench.view.extension.vstodo-sidebar-view");
-        // setTimeout(()=> {
-        // 	vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
-        // }, 500);
+        await vscode.commands.executeCommand("workbench.view.extension.ai-reviewer-sidebar-view");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand("vstodo.askQuestion", async () => {
-        const answer = await vscode.window.showInformationMessage("How was your day?", "good", "bad");
-        if (answer === "bad") {
-            vscode.window.showInformationMessage('Sorry to hear that!');
+    // keyboard shortcut command
+    let disposable = vscode.commands.registerCommand('ai-reviewer.copySelectedCodeToSidebar', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor) {
+            const selection = editor.selection;
+            const selectedText = editor.document.getText(selection);
+            // Send the selected text to the sidebar
+            sidebarProvider.postMessage({
+                command: 'setCode',
+                code: selectedText,
+            });
         }
-        else {
-            console.log({ answer });
-        }
-    }));
+    });
+    context.subscriptions.push(disposable);
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated
@@ -104,6 +106,13 @@ class SidebarProvider {
     _doc;
     constructor(_extensionUri) {
         this._extensionUri = _extensionUri;
+    }
+    // used to post messages from extension commands (keyboard commands)
+    // to sidebar display. 
+    postMessage(message) {
+        if (this._view) {
+            this._view.webview.postMessage(message);
+        }
     }
     resolveWebviewView(webviewView) {
         this._view = webviewView;

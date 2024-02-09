@@ -1,8 +1,12 @@
 {
   "version": 3,
   "file": "sidebar.css",
-  "sources": [],
-  "sourcesContent": [],
+  "sources": [
+    "Sidebar.svelte"
+  ],
+  "sourcesContent": [
+    "<script lang=\"ts\">\"use strict\";\nconst MAXHEIGHT = 200;\nlet answer = '';\nlet prompt = '';\nlet code = '';\nlet selectedOption = '';\nconst options = ['Formatting', 'Efficiency', 'Explanation'];\n// resize text area based on text amount\nfunction resizeTextarea(event) {\n    let target;\n    if (event) {\n        target = event.target;\n    }\n    else {\n        // Correctly select the textarea by its ID\n        target = document.getElementById('mytextarea');\n    }\n    if (!target)\n        return; // Exit if textarea is not found, for safety\n    target.style.height = 'auto';\n    target.style.height = `${Math.min(target.scrollHeight, MAXHEIGHT)}px`;\n}\n// listen to keyboard commands\nwindow.addEventListener('message', (event) => {\n    const message = event.data;\n    switch (message.command) {\n        case 'setCode':\n            code = message.code;\n            setTimeout(resizeTextarea, 0);\n            break;\n    }\n});\n</script>\r\n\r\n<div>Custom Prompt:</div>\r\n\r\n<form on:submit|preventDefault={() => {}}>\r\n\t<input bind:value={prompt} placeholder=\"Optional\" disabled={selectedOption != ''} />\r\n</form>\r\n\r\n<div>Standard Prompt:</div>\r\n\r\n<select bind:value={selectedOption}>\r\n\t<option value=\"\" selected>Use Custom Prompt</option>\r\n\t{#each options as option}\r\n\t\t<option value={option}>{option}</option>\r\n\t{/each}\r\n</select>\r\n\r\n<div>Code:</div>\r\n\r\n<form on:submit|preventDefault={() => {}}>\r\n\t<textarea id=\"mytextarea\" bind:value={code} on:input={resizeTextarea} placeholder=\"Optional\"></textarea>\r\n</form>\r\n\r\n<div>Answer:</div>\r\n\r\n<button\r\n\ton:click={() => {\r\n\t\tanswer = 'AI generated answer goes here';\r\n\t}}>Generate</button\r\n>\r\n\r\n<div>{answer}</div>\r\n\r\n<style>\r\n\ttextarea {\r\n\t\twidth: 100%;\r\n\t\tbox-sizing: border-box; /* Ensures padding does not affect overall width */\r\n\t\toverflow-y: auto;\r\n\t\tresize: none; /* Disables manual resizing */\r\n\t\tmax-height: 200px;\r\n\t}\r\n</style>\r\n"
+  ],
   "names": [],
-  "mappings": ""
+  "mappings": "AAkEC,sBAAS,CACR,KAAK,CAAE,IAAI,CACX,UAAU,CAAE,UAAU,CACtB,UAAU,CAAE,IAAI,CAChB,MAAM,CAAE,IAAI,CACZ,UAAU,CAAE,KACb"
 }
