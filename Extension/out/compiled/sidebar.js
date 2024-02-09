@@ -845,6 +845,49 @@ var app = (function () {
 		return block;
 	}
 
+	function get_each_context(ctx, list, i) {
+		const child_ctx = ctx.slice();
+		child_ctx[11] = list[i];
+		return child_ctx;
+	}
+
+	// (34:4) {#each options as option}
+	function create_each_block(ctx) {
+		let option_1;
+		let t_value = /*option*/ ctx[11] + "";
+		let t;
+
+		const block = {
+			c: function create() {
+				option_1 = element("option");
+				t = text(t_value);
+				option_1.__value = /*option*/ ctx[11];
+				set_input_value(option_1, option_1.__value);
+				add_location(option_1, file, 34, 8, 760);
+			},
+			m: function mount(target, anchor) {
+				insert_dev(target, option_1, anchor);
+				append_dev(option_1, t);
+			},
+			p: noop,
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach_dev(option_1);
+				}
+			}
+		};
+
+		dispatch_dev("SvelteRegisterBlock", {
+			block,
+			id: create_each_block.name,
+			type: "each",
+			source: "(34:4) {#each options as option}",
+			ctx
+		});
+
+		return block;
+	}
+
 	function create_fragment(ctx) {
 		let div0;
 		let t1;
@@ -911,6 +954,7 @@ var app = (function () {
 				t13 = space();
 				div4 = element("div");
 				t14 = text(/*answer*/ ctx[0]);
+<<<<<<< Updated upstream
 				add_location(div0, file, 34, 0, 931);
 				attr_dev(input, "placeholder", "Optional");
 				input.disabled = input_disabled_value = /*selectedOption*/ ctx[3] != '';
@@ -932,6 +976,29 @@ var app = (function () {
 				add_location(div3, file, 55, 0, 1503);
 				add_location(button, file, 57, 0, 1525);
 				add_location(div4, file, 63, 0, 1626);
+=======
+				add_location(div0, file, 19, 0, 387);
+				attr_dev(input, "placeholder", "Optional");
+				input.disabled = input_disabled_value = /*selectedOption*/ ctx[3] != "";
+				add_location(input, file, 26, 1, 506);
+				add_location(form0, file, 21, 0, 414);
+				add_location(div1, file, 29, 0, 599);
+				option_1.__value = "";
+				set_input_value(option_1, option_1.__value);
+				option_1.selected = true;
+				add_location(option_1, file, 32, 4, 669);
+				if (/*selectedOption*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[7].call(select));
+				add_location(select, file, 31, 0, 628);
+				add_location(div2, file, 38, 0, 824);
+				attr_dev(textarea, "rows", "1");
+				attr_dev(textarea, "placeholder", "Optional");
+				attr_dev(textarea, "class", "svelte-msh147");
+				add_location(textarea, file, 45, 1, 934);
+				add_location(form1, file, 40, 0, 842);
+				add_location(div3, file, 48, 0, 1041);
+				add_location(button, file, 50, 0, 1061);
+				add_location(div4, file, 56, 0, 1156);
+>>>>>>> Stashed changes
 			},
 			l: function claim(nodes) {
 				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -972,19 +1039,32 @@ var app = (function () {
 				if (!mounted) {
 					dispose = [
 						listen_dev(input, "input", /*input_input_handler*/ ctx[5]),
+<<<<<<< Updated upstream
 						listen_dev(form0, "submit", prevent_default(submit_handler), false, true, false, false),
 						listen_dev(select, "change", /*select_change_handler*/ ctx[6]),
 						listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[7]),
 						listen_dev(textarea, "input", resizeTextarea, false, false, false, false),
 						listen_dev(form1, "submit", prevent_default(submit_handler_1), false, true, false, false),
 						listen_dev(button, "click", /*click_handler*/ ctx[8], false, false, false, false)
+=======
+						listen_dev(form0, "submit", prevent_default(/*submit_handler*/ ctx[6]), false, true, false, false),
+						listen_dev(select, "change", /*select_change_handler*/ ctx[7]),
+						listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[8]),
+						listen_dev(textarea, "input", resizeTextarea, false, false, false, false),
+						listen_dev(form1, "submit", prevent_default(/*submit_handler_1*/ ctx[9]), false, true, false, false),
+						listen_dev(button, "click", /*click_handler*/ ctx[10], false, false, false, false)
+>>>>>>> Stashed changes
 					];
 
 					mounted = true;
 				}
 			},
 			p: function update(ctx, [dirty]) {
+<<<<<<< Updated upstream
 				if (dirty & /*selectedOption, options*/ 24 && input_disabled_value !== (input_disabled_value = /*selectedOption*/ ctx[3] != '')) {
+=======
+				if (dirty & /*selectedOption, options*/ 24 && input_disabled_value !== (input_disabled_value = /*selectedOption*/ ctx[3] != "")) {
+>>>>>>> Stashed changes
 					prop_dev(input, "disabled", input_disabled_value);
 				}
 
@@ -1065,6 +1145,7 @@ var app = (function () {
 		return block;
 	}
 
+<<<<<<< Updated upstream
 	const MAXHEIGHT = 200;
 
 	// resize text area based on text amount
@@ -1091,6 +1172,14 @@ var app = (function () {
 		
 	};
 
+=======
+	function resizeTextarea(event) {
+		const target = event.target;
+		target.style.height = 'auto';
+		target.style.height = `${target.scrollHeight}px`;
+	}
+
+>>>>>>> Stashed changes
 	function instance($$self, $$props, $$invalidate) {
 		let { $$slots: slots = {}, $$scope } = $$props;
 		validate_slots('Sidebar', slots, []);
@@ -1098,6 +1187,7 @@ var app = (function () {
 		let prompt = '';
 		let code = '';
 		let selectedOption = '';
+<<<<<<< Updated upstream
 		const options = ['Formatting', 'Efficiency', 'Explanation'];
 
 		// listen to keyboard commands
@@ -1112,6 +1202,9 @@ var app = (function () {
 			}
 		});
 
+=======
+		const options = ["Formatting", "Efficiency", "Security", "Variable Naming", "Explanation"];
+>>>>>>> Stashed changes
 		const writable_props = [];
 
 		Object.keys($$props).forEach(key => {
@@ -1123,6 +1216,13 @@ var app = (function () {
 			$$invalidate(1, prompt);
 		}
 
+<<<<<<< Updated upstream
+=======
+		const submit_handler = () => {
+			$$invalidate(0, answer = 'AI generated result goes here');
+		};
+
+>>>>>>> Stashed changes
 		function select_change_handler() {
 			selectedOption = select_value(this);
 			$$invalidate(3, selectedOption);
@@ -1133,13 +1233,23 @@ var app = (function () {
 			code = this.value;
 			$$invalidate(2, code);
 		}
+<<<<<<< Updated upstream
+=======
+
+		const submit_handler_1 = () => {
+			$$invalidate(0, answer = 'AI generated result goes here');
+		};
+>>>>>>> Stashed changes
 
 		const click_handler = () => {
 			$$invalidate(0, answer = 'AI generated answer goes here');
 		};
 
 		$$self.$capture_state = () => ({
+<<<<<<< Updated upstream
 			MAXHEIGHT,
+=======
+>>>>>>> Stashed changes
 			answer,
 			prompt,
 			code,
@@ -1166,8 +1276,15 @@ var app = (function () {
 			selectedOption,
 			options,
 			input_input_handler,
+<<<<<<< Updated upstream
 			select_change_handler,
 			textarea_input_handler,
+=======
+			submit_handler,
+			select_change_handler,
+			textarea_input_handler,
+			submit_handler_1,
+>>>>>>> Stashed changes
 			click_handler
 		];
 	}
