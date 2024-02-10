@@ -1,0 +1,11 @@
+# Node modules and dependencies
+Extension/node_modules/
+
+# Local development
+Extension/.vscode/
+Extension/.history/
+Extension/*.log
+
+# Ignore built files
+Extension/out/
+Extension/dist/
