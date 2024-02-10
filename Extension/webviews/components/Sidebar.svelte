@@ -1,12 +1,16 @@
 <script lang="ts">
+	// constants
 	const EFFICIENCY_PROMPT = 'Analyze for efficiency:\n';
 	const FORMATTING_PROMPT = 'Analyze for formatting:\n';
 	const EXPLANATION_PROMPT = 'Explain the code:\n';
 	const MAXHEIGHT = 200;
+
 	let answer = '';
 	let prompt = '';
 	let code = '';
 	let selectedOption = '';
+	let isLoading = false; 
+
 
 	const options = ['Formatting', 'Efficiency', 'Explanation'];
 
@@ -41,6 +45,7 @@
 				break;
 			case 'modelResponse':
 				answer = message.answer;
+				isLoading = false;
 				break;
 		}
 	});
@@ -65,6 +70,7 @@
 				break;
 		}
 		finalPrompt = finalPrompt + code;
+		isLoading = true;
 		tsvscode.postMessage({ type: 'generateResponse', value: finalPrompt });
 	}
 </script>
@@ -90,15 +96,20 @@
 	<textarea id="mytextarea" bind:value={code} on:input={resizeTextarea} placeholder="Optional"></textarea>
 </form>
 
-<div>Answer:</div>
-
 <button
 	on:click={() => {
 		generateResponse();
 	}}>Generate</button
 >
 
-<div>{answer}</div>
+<div>Answer:</div>
+
+<!-- Display loading indicator if isLoading is true -->
+{#if isLoading}
+	<div class="loader"></div>
+{:else}
+	<div>{answer}</div>
+{/if}
 
 <style>
 	textarea {
@@ -107,5 +118,19 @@
 		overflow-y: auto;
 		resize: none; /* Disables manual resizing */
 		max-height: 200px;
+	}
+
+	.loader {
+		border: 4px solid rgba(0, 0, 0, 0.1);
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		border-left-color: #09f;
+		animation: spin 1s ease infinite;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
 	}
 </style>

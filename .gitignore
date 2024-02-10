@@ -1,5 +1,6 @@
 # Node modules and dependencies
 Extension/node_modules/
+Extension/package-lock.json
 
 # Local development
 Extension/.vscode/
