@@ -25,7 +25,7 @@ const extensionConfig = {
   },
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.svelte']
   },
   module: {
     rules: [
@@ -37,7 +37,20 @@ const extensionConfig = {
             loader: 'ts-loader'
           }
         ]
-      }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svelte$/,
+        use: 'svelte-loader',
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ]
   },
   devtool: 'nosources-source-map',

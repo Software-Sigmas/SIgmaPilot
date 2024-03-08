@@ -47,7 +47,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           if (!data.value) {
             return;
           }
-          console.log(data.value);
           await vscode.commands.executeCommand('ai-reviewer.modelConnection', data.value);
           break;
         }
@@ -74,7 +73,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       vscode.Uri.joinPath(this._extensionUri, "out", "compiled/sidebar.css")
     );
     
-
     // Use a nonce to only allow a specific script to be run.
     const nonce = getNonce();
 

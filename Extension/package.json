@@ -1,7 +1,8 @@
 {
   "name": "ai-reviewer",
+  "publisher": "sigmas",
   "displayName": "AI Reviewer",
-  "description": "Keeping track of stuff",
+  "description": "Code review with the help of artifical intelligence.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -12,6 +13,36 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "AI Reviewer",
+      "properties": {
+        "AiReviewer.maxTokenAmount": {
+          "type": "number",
+          "default": 256,
+          "description": "Max tokens for request. Using more tokens will result in longer wait times."
+        },
+        "AiReviewer.enterApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Enter api key for LLM connection."
+        },
+        "AiReviewer.enterUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Enter url for LLM connection."
+        },
+        "AiReviewer.connectionType": {
+          "type": "string",
+          "default": "LM Studio",
+          "enum": [
+            "LM Studio",
+            "OpenAI API"
+          ],
+          "description": "Select the connection type for the LLM."
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
@@ -35,15 +66,19 @@
     "commands": [
       {
         "command": "ai-reviewer.refresh",
-        "title": "Refresh"
+        "title": "AI Reviewer: Refresh"
       },
       {
         "command": "ai-reviewer.copySelectedCodeToSidebar",
-        "title": "Copy Selected Code to Sidebar"
+        "title": "AI Reviewer: Copy Selected Code to Sidebar"
       },
       {
         "command": "ai-reviewer.modelConnection",
-        "title": "Send message to model"
+        "title": "AI Reviewer: Generate Response"
+      },
+      {
+        "command": "ai-reviewer.openSettings",
+        "title": "AI Reviewer: Open Settings"
       }
     ],
     "keybindings": [
@@ -82,17 +117,20 @@
     "@typescript-eslint/parser": "^6.9.0",
     "@vscode/test-electron": "^2.3.6",
     "concurrently": "^8.2.2",
+    "css-loader": "^6.10.0",
     "eslint": "^8.52.0",
     "glob": "^10.3.10",
     "mocha": "^10.2.0",
     "rollup": "^2.79.1",
     "rollup-plugin-svelte": "^6.1.1",
     "rollup-plugin-terser": "^7.0.2",
+    "style-loader": "^3.3.4",
     "svelte": "^4.2.9",
     "svelte-check": "^3.6.3",
+    "svelte-loader": "^3.1.9",
     "svelte-preprocess": "^5.1.3",
-    "ts-loader": "^9.5.0",
-    "typescript": "^5.2.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
@@ -103,6 +141,6 @@
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
-    "openai": "^4.26.1"
+    "openai": "^4.28.0"
   }
 }
