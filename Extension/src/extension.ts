@@ -71,16 +71,12 @@ let disposable3 = vscode.commands.registerCommand('ai-reviewer.modelConnection',
     const setTokens = config.get<number>('maxTokenAmount', 64);
     const setLLM = config.get<string>('connectionType', 'LM Studio');
 
-    console.log(">>> url: " + setUrl);
-    console.log(">>> api: " + setApiKey);
-    console.log(">>> maxTokens: " + setTokens);
-
     // Validate settings based on connection type
     const errorMessage = validateSettings(config, setLLM);
     if (errorMessage) {
         vscode.window.showErrorMessage(errorMessage);
         sidebarProvider.postMessage({command: "error", data: errorMessage.includes('API Key') ? "api" : "url"});
-        return; // Stop execution if configuration is not valid
+        return;
     }
 
     try {
@@ -88,7 +84,7 @@ let disposable3 = vscode.commands.registerCommand('ai-reviewer.modelConnection',
         console.log(modelResponse);
         sidebarProvider.postMessage({
             command: 'modelResponse',
-            answer: modelResponse.content,
+            answer: modelResponse,
         });
     } catch (error) {
         vscode.window.showErrorMessage("Connection to LLM failed.");

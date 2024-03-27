@@ -1,32 +1,38 @@
 <script lang="ts">
-	import { EFFICIENCY_PROMPT, FORMATTING_PROMPT, EXPLANATION_PROMPT, options, resizeTextarea } from './Constants';
+	import {
+		EFFICIENCY_PROMPT,
+		FORMATTING_PROMPT,
+		EXPLANATION_PROMPT,
+		options,
+		resizeTextarea,
+	} from "./Constants";
 
-	let answer = '';
-	let prompt = '';
-	let code = '';
-	let selectedOption = '';
+	let answer = "";
+	let prompt = "";
+	let code = "";
+	let selectedOption = "";
 	let isLoading = false;
 
 	// recieve commands from webview
-	window.addEventListener('message', (event) => {
+	window.addEventListener("message", (event) => {
 		const message = event.data;
 		switch (message.command) {
-			case 'setCode':
+			case "setCode":
 				code = message.code;
 				setTimeout(resizeTextarea, 0);
 				break;
-			case 'quickReview':
+			case "quickReview":
 				code = message.code;
-				prompt = '';
-				selectedOption = 'Explanation';
+				prompt = "";
+				selectedOption = "Explanation";
 				setTimeout(resizeTextarea, 0);
 				generateResponse();
 				break;
-			case 'modelResponse':
+			case "modelResponse":
 				answer = message.answer;
 				isLoading = false;
 				break;
-			case 'error':
+			case "error":
 				isLoading = false;
 				break;
 			default:
@@ -35,35 +41,49 @@
 	});
 
 	function generateResponse() {
-		let finalPrompt = '';
+		let finalPrompt = "";
 
 		switch (selectedOption) {
-			case 'Formatting':
+			case "Formatting":
 				finalPrompt = FORMATTING_PROMPT;
 				break;
-			case 'Efficiency':
+			case "Efficiency":
 				finalPrompt = EFFICIENCY_PROMPT;
 				break;
-			case 'Explanation':
+			case "Explanation":
 				finalPrompt = EXPLANATION_PROMPT;
 				break;
-			case '':
-				finalPrompt = prompt + '\n';
+			case "":
+				finalPrompt = prompt + "\n";
 				break;
 			default:
 				finalPrompt = EXPLANATION_PROMPT;
 				break;
 		}
-		// do not allow communication with model without code or custom prompt. 
-		if ((selectedOption=="" && prompt == '') || (selectedOption!="" && code=="")) {
-			tsvscode.postMessage({ type: 'onError', value: 'Add code or custom prompt.' });
+		// do not allow communication with model without code or custom prompt.
+		if (selectedOption == "" && prompt == "") {
+			tsvscode.postMessage({
+				type: "onError",
+				value: "Please add custom prompt.",
+			});
+			return;
+		}
+
+		if (selectedOption != "" && code == "") {
+			tsvscode.postMessage({
+				type: "onError",
+				value: "Please add code.",
+			});
 			return;
 		}
 
 		finalPrompt = finalPrompt + code;
 		isLoading = true;
 		try {
-			tsvscode.postMessage({ type: 'generateResponse', value: finalPrompt });
+			tsvscode.postMessage({
+				type: "generateResponse",
+				value: finalPrompt,
+			});
 		} catch (e) {
 			isLoading = false;
 		}
@@ -73,7 +93,11 @@
 <div>Custom Prompt:</div>
 
 <form on:submit|preventDefault={() => {}}>
-	<input bind:value={prompt} placeholder="Optional" disabled={selectedOption != ''} />
+	<input
+		bind:value={prompt}
+		placeholder="Optional"
+		disabled={selectedOption != ""}
+	/>
 </form>
 
 <div>Standard Prompt:</div>
@@ -88,7 +112,12 @@
 <div>Code:</div>
 
 <form on:submit|preventDefault={() => {}}>
-	<textarea id="mytextarea" bind:value={code} on:input={resizeTextarea} placeholder="Optional"></textarea>
+	<textarea
+		id="mytextarea"
+		bind:value={code}
+		on:input={resizeTextarea}
+		placeholder="Optional"
+	></textarea>
 </form>
 
 <button
@@ -140,11 +169,15 @@
 	.select-vscode-style {
 		width: 100%;
 		color: var(--vscode-foreground); /* Text color */
-		background-color: var(--vscode-dropdown-background); /* Dropdown background */
+		background-color: var(
+			--vscode-dropdown-background
+		); /* Dropdown background */
 		border: 1px solid var(--vscode-dropdown-border); /* Border color */
 		padding: 5px 10px; /* Adjust padding as needed */
 		font-size: var(--vscode-font-size); /* Match the font size */
-		border-radius: var(--vscode-border-radius); /* Optional: if VSCode variables provide this */
+		border-radius: var(
+			--vscode-border-radius
+		); /* Optional: if VSCode variables provide this */
 		appearance: none; /* Removes default styling provided by browsers */
 		-moz-appearance: none;
 		-webkit-appearance: none;

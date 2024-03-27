@@ -4,8 +4,7 @@ import axios from 'axios';
 // for OpenAI: https://api.openai.com/v1/completions
 
 export async function sendMessageToModel(userMessage: string, type:string, url:string, api:string, tokens:number) {
-    console.log(userMessage);
-    console.log(type);
+
     switch (type) {
         case 'LM Studio': {
             return await lmStudioCall(userMessage, url, api, tokens);
@@ -37,25 +36,30 @@ async function lmStudioCall(userMessage: string, url:string, api:string, tokens:
         });
 
         // Handling the response from your local model server
-        console.log(response.data);
         const completionMessage = response.data.choices[0].message;
-        return completionMessage;
+        console.log(completionMessage);
+        return completionMessage.content;
     } catch (error) {
         console.error('Error calling the model:', error);
         throw error; 
     }
 } 
 
-async function openAICall(userMessage: string, url:string, api:string, tokens:number) {
-    console.log(url);
-   try {
+async function openAICall(userMessage: string, url: string, api: string, tokens: number) {
+    try {
+        const messages = [{
+            role: "user",
+            content: userMessage
+        }];
+
+        console.log(messages);
+
         const response = await axios.post(
             url,
             {
-                prompt: userMessage,
                 model: "gpt-3.5-turbo-0125",
-                tokens: tokens,
-                // Add additional parameters as needed
+                messages: messages,
+                max_tokens: tokens,
             },
             {
                 headers: {
@@ -64,13 +68,16 @@ async function openAICall(userMessage: string, url:string, api:string, tokens:nu
                 },
             }
         );
-        return response.data;
+        console.log(response.data);
+        return response.data.choices[0].message.content;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             console.error('Axios error:', error.response?.data || error.message);
+        } else if (error instanceof Error) {
+            console.error('Unexpected error:', error.message);
         } else {
-            console.error('Unexpected error:', error);
+            console.error('An unexpected error occurred');
         }
-        throw error; // Rethrow the error for further handling if necessary
+        throw error;
     }
-} 
+}

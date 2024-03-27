@@ -1,6 +1,6 @@
-export const EFFICIENCY_PROMPT = 'Analyze for efficiency:\n';
-export const FORMATTING_PROMPT = 'Analyze for formatting:\n';
-export const EXPLANATION_PROMPT = 'Explain the code:\n';
+export const EFFICIENCY_PROMPT = 'Analyze the following code for efficiency:\n';
+export const FORMATTING_PROMPT = 'Analyze the following code for formatting:\n';
+export const EXPLANATION_PROMPT = 'Explain the following code:\n';
 export const MAXHEIGHT = 200;
 export const options = ['Formatting', 'Efficiency', 'Explanation'];
 
