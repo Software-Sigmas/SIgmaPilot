@@ -3,6 +3,7 @@ import axios from 'axios';
 // for LM studio: URL: http://localhost:1234/v1/chat/completions
 // for OpenAI: https://api.openai.com/v1/completions
 
+// Function that will send the messages to the models and will call the designated call to the proper model. 
 export async function sendMessageToModel(userMessage: string, type:string, url:string, api:string, tokens:number) {
 
     switch (type) {
@@ -16,7 +17,7 @@ export async function sendMessageToModel(userMessage: string, type:string, url:s
         }
     }
 }
-
+// Function will send the user's message to the model that is being hosted on LM studios.
 async function lmStudioCall(userMessage: string, url:string, api:string, tokens:number) {
     try {
         const response = await axios.post(url, {

@@ -103,10 +103,10 @@
 <div>Standard Prompt:</div>
 
 <select bind:value={selectedOption} class="select-vscode-style">
-	<option value="" selected>Use Custom Prompt</option>
-	{#each options as option}
-		<option value={option}>{option}</option>
-	{/each}
+  <option value="" selected>Use Custom Prompt</option>
+  {#each options as option}
+    <option value={option}>{option}</option>
+  {/each}
 </select>
 
 <div>Code:</div>
@@ -121,50 +121,50 @@
 </form>
 
 <button
-	on:click={() => {
-		generateResponse();
-	}}>Generate</button
+  on:click={() => {
+    generateResponse();
+  }}>Generate</button
 >
 
 <div>Answer:</div>
 
 <!-- Display loading indicator if isLoading is true -->
 {#if isLoading}
-	<div class="loader"></div>
+  <div class="loader"></div>
 {:else}
-	<div>{answer}</div>
+  <div>{answer}</div>
 {/if}
 
 <style>
-	textarea {
-		width: 100%;
-		box-sizing: border-box;
-		overflow-y: auto;
-		resize: none;
-		max-height: 200px;
-	}
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    resize: none;
+    max-height: 200px;
+  }
 
-	input:disabled {
-		opacity: 20%;
-	}
+  input:disabled {
+    opacity: 20%;
+  }
 
-	.loader {
-		border: 4px solid rgba(0, 0, 0, 0.1);
-		width: 36px;
-		height: 36px;
-		border-radius: 50%;
-		border-left-color: #09f;
-		animation: spin 1s ease infinite;
-	}
+  .loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #09f;
+    animation: spin 1s ease infinite;
+  }
 
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 
 	.select-vscode-style {
 		width: 100%;
@@ -184,11 +184,11 @@
 		cursor: pointer; /* Cursor to pointer to indicate it's clickable */
 	}
 
-	/* Custom arrow using background-image for dropdowns if you want to replicate the VSCode dropdown arrow style */
-	.select-vscode-style {
-		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
-		background-repeat: no-repeat;
-		background-position: right 10px center;
-		background-size: 12px;
-	}
+  /* Custom arrow using background-image for dropdowns if you want to replicate the VSCode dropdown arrow style */
+  .select-vscode-style {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+  }
 </style>
