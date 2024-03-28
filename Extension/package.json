@@ -1,7 +1,7 @@
 {
-  "name": "ai-reviewer",
-  "publisher": "sigmas",
-  "displayName": "AI Reviewer",
+  "name": "sigma-pilot",
+  "publisher": "software-sigmas",
+  "displayName": "SigmaPilot",
   "description": "Code review with the help of artifical intelligence.",
   "version": "0.0.1",
   "engines": {
@@ -15,76 +15,76 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "AI Reviewer",
+      "title": "SigmaPilot",
       "properties": {
-        "AiReviewer.maxTokenAmount": {
+        "SigmaPilot.maxTokenAmount": {
           "type": "number",
           "default": 256,
           "description": "Max tokens for request. Using more tokens will result in longer wait times."
         },
-        "AiReviewer.enterApiKey": {
+        "SigmaPilot.enterApiKey": {
           "type": "string",
           "default": "",
           "description": "Enter api key for LLM connection. Not necessary for local connections."
         },
-        "AiReviewer.enterUrl": {
+        "SigmaPilot.enterUrl": {
           "type": "string",
           "default": "",
           "description": "Enter url for LLM connection."
         },
-        "AiReviewer.enterModelName": {
-            "type": "string",
-            "default": "",
-            "description": "Enter the name of the model you are using. For LM Studio, use local-model."
+        "SigmaPilot.enterModelName": {
+          "type": "string",
+          "default": "",
+          "description": "Enter the name of the model you are using. For LM Studio, use local-model."
         }
       }
     },
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "ai-reviewer-sidebar-view",
-          "title": "AI Reviewer",
+          "id": "sigma-pilot-sidebar-view",
+          "title": "SigmaPilot",
           "icon": "media/AI_Bot.svg"
         }
       ]
     },
     "views": {
-      "ai-reviewer-sidebar-view": [
+      "sigma-pilot-sidebar-view": [
         {
           "type": "webview",
-          "id": "ai-reviewer-sidebar",
-          "name": "AI Reviewer",
+          "id": "sigma-pilot-sidebar",
+          "name": "SigmaPilot",
           "icon": "media/AI_Bot.svg",
-          "contextualTitle": "AI Reviewer"
+          "contextualTitle": "SigmaPilot"
         }
       ]
     },
     "commands": [
       {
-        "command": "ai-reviewer.refresh",
-        "title": "AI Reviewer: Refresh"
+        "command": "sigma-pilot.refresh",
+        "title": "SigmaPilot: Refresh"
       },
       {
-        "command": "ai-reviewer.copySelectedCodeToSidebar",
-        "title": "AI Reviewer: Copy Selected Code to Sidebar"
+        "command": "sigma-pilot.copySelectedCodeToSidebar",
+        "title": "SigmaPilot: Copy Selected Code to Sidebar"
       },
       {
-        "command": "ai-reviewer.modelConnection",
-        "title": "AI Reviewer: Generate Response"
+        "command": "sigma-pilot.modelConnection",
+        "title": "SigmaPilot: Generate Response"
       },
       {
-        "command": "ai-reviewer.openSettings",
-        "title": "AI Reviewer: Open Settings"
+        "command": "sigma-pilot.openSettings",
+        "title": "SigmaPilot: Open Settings"
       }
     ],
     "keybindings": [
       {
-        "command": "ai-reviewer.copySelectedCodeToSidebar",
+        "command": "sigma-pilot.copySelectedCodeToSidebar",
         "key": "ctrl+shift+c",
         "when": "editorTextFocus"
       },
       {
-        "command": "ai-reviewer.runQuickReview",
+        "command": "sigma-pilot.runQuickReview",
         "key": "ctrl+shift+q",
         "when": "editorTextFocus"
       }
