@@ -10,7 +10,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   // used to post messages from extension commands (keyboard commands)
   // to sidebar display. 
-  public postMessage(message: any) {
+  public postMessage(message: {command: string, data:any}) {
         if (this._view) {
             this._view.webview.postMessage(message);
         }

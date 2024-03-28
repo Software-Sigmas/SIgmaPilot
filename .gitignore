@@ -6,6 +6,7 @@ Extension/package-lock.json
 Extension/.vscode/
 Extension/.history/
 Extension/*.log
+Extension/.vscode-test
 
 # Ignore built files
 Extension/out/

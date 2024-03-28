@@ -18,18 +18,18 @@
 		const message = event.data;
 		switch (message.command) {
 			case "setCode":
-				code = message.code;
+				code = message.data;
 				setTimeout(resizeTextarea, 0);
 				break;
 			case "quickReview":
-				code = message.code;
+				code = message.data;
 				prompt = "";
 				selectedOption = "Explanation";
 				setTimeout(resizeTextarea, 0);
 				generateResponse();
 				break;
 			case "modelResponse":
-				answer = message.answer;
+				answer = message.data;
 				isLoading = false;
 				break;
 			case "error":

@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 	context.subscriptions.push(
-	  vscode.window.registerWebviewViewProvider("ai-reviewer-sidebar", sidebarProvider)
+        vscode.window.registerWebviewViewProvider("ai-reviewer-sidebar", sidebarProvider)
 	);
 
 	context.subscriptions.push(
@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	// copy to sidebar keyboard shortcut command
-	let disposable = vscode.commands.registerCommand('ai-reviewer.copySelectedCodeToSidebar', () => {
+	const disposable = vscode.commands.registerCommand('ai-reviewer.copySelectedCodeToSidebar', () => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
             const selection = editor.selection;
@@ -28,13 +28,13 @@ export function activate(context: vscode.ExtensionContext) {
 			// Send the selected text to the sidebar
             sidebarProvider.postMessage({
                 command: 'setCode',
-                code: selectedText,
+                data: selectedText,
             });
         }
     });
 
 	// run quick review keyboard shortcut command
-	let disposable2 = vscode.commands.registerCommand('ai-reviewer.runQuickReview', () => {
+	const disposable2 = vscode.commands.registerCommand('ai-reviewer.runQuickReview', () => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
             const selection = editor.selection;
@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 			// Send the selected text to the sidebar
             sidebarProvider.postMessage({
                 command: 'quickReview',
-                code: selectedText,
+                data: selectedText,
             });
         }
     });
@@ -63,28 +63,27 @@ function validateSettings(config: vscode.WorkspaceConfiguration, connectionType:
     return null;
 }
 
-let disposable3 = vscode.commands.registerCommand('ai-reviewer.modelConnection', async (userPrompt) => {
+const disposable3 = vscode.commands.registerCommand('ai-reviewer.modelConnection', async (userPrompt) => {
     // getting user configurations that they set in settings
     const config = vscode.workspace.getConfiguration('AiReviewer');
     const setApiKey = config.get<string>('enterApiKey', ""); 
     const setUrl = config.get<string>('enterUrl', "");
     const setTokens = config.get<number>('maxTokenAmount', 64);
-    const setLLM = config.get<string>('connectionType', 'LM Studio');
+    const setModelName = config.get<string>('enterModelName', 'local-model');
 
     // Validate settings based on connection type
-    const errorMessage = validateSettings(config, setLLM);
-    if (errorMessage) {
-        vscode.window.showErrorMessage(errorMessage);
-        sidebarProvider.postMessage({command: "error", data: errorMessage.includes('API Key') ? "api" : "url"});
-        return;
-    }
+    // const errorMessage = validateSettings(config, setLLM);
+    // if (errorMessage) {
+    //     vscode.window.showErrorMessage(errorMessage);
+    //     sidebarProvider.postMessage({command: "error", data: errorMessage.includes('API Key') ? "api" : "url"});
+    //     return;
+    // }
 
     try {
-        const modelResponse = await sendMessageToModel(userPrompt, setLLM, setUrl, setApiKey, setTokens);
-        console.log(modelResponse);
+        const modelResponse = await sendMessageToModel(userPrompt, setUrl, setApiKey, setTokens, setModelName);
         sidebarProvider.postMessage({
             command: 'modelResponse',
-            answer: modelResponse,
+            data: modelResponse,
         });
     } catch (error) {
         vscode.window.showErrorMessage("Connection to LLM failed.");
@@ -94,7 +93,7 @@ let disposable3 = vscode.commands.registerCommand('ai-reviewer.modelConnection',
 
 
     // open configuration settings from command palette
-    let disposable4 = vscode.commands.registerCommand('ai-reviewer.openSettings', () => {
+    const disposable4 = vscode.commands.registerCommand('ai-reviewer.openSettings', () => {
         vscode.commands.executeCommand('workbench.action.openSettings', '@ext:sigmas.ai-reviewer');
     });
 
