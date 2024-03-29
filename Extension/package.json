@@ -44,7 +44,7 @@
         {
           "id": "sigma-pilot-sidebar-view",
           "title": "SigmaPilot",
-          "icon": "media/AI_Bot.svg"
+          "icon": "media/AI_Bot.png"
         }
       ]
     },
@@ -54,7 +54,7 @@
           "type": "webview",
           "id": "sigma-pilot-sidebar",
           "name": "SigmaPilot",
-          "icon": "media/AI_Bot.svg",
+          "icon": "media/AI_Bot.png",
           "contextualTitle": "SigmaPilot"
         }
       ]

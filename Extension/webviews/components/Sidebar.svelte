@@ -33,7 +33,11 @@
 				isLoading = false;
 				break;
 			case "error":
-				isLoading = false;
+				if (message.data.includes("new request") ) {
+					answer = "";
+				} else {
+					isLoading = false;
+				}
 				break;
 			default:
 				break;

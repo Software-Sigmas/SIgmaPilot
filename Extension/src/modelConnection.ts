@@ -1,8 +1,21 @@
-import axios from "axios";
+import axios, {CancelTokenSource} from "axios";
+/*
+ * Sends a user message to a specified model API and returns the model's response.
+ * Handles HTTP request creation, error handling, and extracts the relevant response content.
+ * Supports various APIs, including OpenAI and local model servers, with customizable parameters.
+ *
+ * @param {string} userMessage - User message to be processed by the model.
+ * @param {string} url - Model API endpoint URL.
+ * @param {string} api - API key for authentication.
+ * @param {number} tokens - Max number of tokens for the model's response.
+ * @param {string} model - Identifier of the model.
+ *
+ * @returns {Promise<string>} Promise resolving with the model's response or rejecting with an error message.
+ *
+ * Errors from the model or network issues result in rejected promises with descriptive messages.
+ */
 
-// for LM studio: URL: http://localhost:1234/v1/chat/completions
-// for OpenAI: URL: https://api.openai.com/v1/chat/completions
-//
+let currentCancelTokenSource: CancelTokenSource | null = null;
 
 export async function modelConnection(
 	userMessage: string,
@@ -11,12 +24,16 @@ export async function modelConnection(
 	tokens: number,
 	model: string
 ) {
+	// Cancel the previous request if it's still ongoing
+	if (currentCancelTokenSource !== null) {
+		currentCancelTokenSource.cancel("Cancelled due to new request.");
+	}
+
+	// Create a new CancelToken for the current request
+	currentCancelTokenSource = axios.CancelToken.source();
+
 	try {
 		const messages = [
-			// {
-			// 	role: "system",
-			// 	content: "",
-			// },
 			{
 				role: "user",
 				content: userMessage,
@@ -35,13 +52,13 @@ export async function modelConnection(
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${api}`,
 				},
+				cancelToken: currentCancelTokenSource.token,
 			}
 		);
-		console.log(response);
-		console.log(response.data.choices[0].message.content);
+		currentCancelTokenSource = null;
 		return response.data.choices[0].message.content;
 	} catch (error) {
-		console.log(error);
+		currentCancelTokenSource = null;
 		let errorMessage = "An unexpected error occurred.";
 		if (axios.isAxiosError(error)) {
 			if (error.response) {
@@ -77,7 +94,7 @@ export async function modelConnection(
 						break;
 				}
 			} else {
-				errorMessage = `Axios error: ${error.message}`;
+				errorMessage = `${error.message}`;
 			}
 		} else if (error instanceof Error) {
 			errorMessage = `Unexpected error: ${error.message}`;
