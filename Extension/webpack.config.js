@@ -1,48 +1,77 @@
+// Enables TypeScript checks and strict mode for more secure code.
 //@ts-check
-
 'use strict';
 
+// Imports necessary Node.js path module for handling file paths.
 const path = require('path');
 
-//@ts-check
-/** @typedef {import('webpack').Configuration} WebpackConfig **/
+/**
+ * Type definition import for Webpack configuration.
+ * This helps with autocompletion and type checking for the config object.
+ * @typedef {import('webpack').Configuration} WebpackConfig
+ */
 
 /** @type WebpackConfig */
 const extensionConfig = {
-  target: 'node', // VS Code extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
-	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
+  // Targets a Node.js environment as VS Code extensions run in such a context.
+  // More info: https://webpack.js.org/configuration/target/
+  target: 'node',
 
-  entry: './src/extension.ts', // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
+  // Keeps the source code close to the original, useful for debugging.
+  // For production, this should be set to 'production'.
+  mode: 'none',
+
+  // Entry point for the extension, the starting point of the application.
+  // More info: https://webpack.js.org/configuration/entry-context/
+  entry: './src/extension.ts',
+
   output: {
-    // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
+    // Outputs the bundle to the 'dist' folder (refer to package.json).
+    // More info: https://webpack.js.org/configuration/output/
     path: path.resolve(__dirname, 'dist'),
     filename: 'extension.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
+
+  // Excludes the 'vscode' module which is provided by the runtime environment.
+  // Additional non-webpack'able modules should be listed here.
+  // More info: https://webpack.js.org/configuration/externals/
   externals: {
-    vscode: 'commonjs vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
-    // modules added here also need to be added in the .vscodeignore file
+    vscode: 'commonjs vscode',
   },
+
   resolve: {
-    // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-    extensions: ['.ts', '.js']
+    // Adds support for resolving TypeScript and JavaScript files.
+    // More info: https://webpack.js.org/configuration/resolve/#resolveextensions
+    extensions: ['.ts', '.js', '.svelte'],
   },
+
   module: {
     rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader'
-          }
-        ]
-      }
-    ]
+        use: ['ts-loader'],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svelte$/,
+        use: ['svelte-loader'],
+      },
+    ],
   },
+
+  // Generates source maps without source code content, useful for error reporting.
   devtool: 'nosources-source-map',
+
+  // Configures logging level, useful for debugging and development.
   infrastructureLogging: {
-    level: "log", // enables logging required for problem matchers
+    level: "log",
   },
 };
-module.exports = [ extensionConfig ];
+
+// Exports the configuration for use by webpack.
+module.exports = [extensionConfig];

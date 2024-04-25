@@ -1,7 +1,8 @@
 {
-  "name": "ai-reviewer",
-  "displayName": "AI Reviewer",
-  "description": "Keeping track of stuff",
+  "name": "sigma-pilot",
+  "publisher": "software-sigmas",
+  "displayName": "SigmaPilot",
+  "description": "Code review with the help of artifical intelligence.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -12,48 +13,78 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "SigmaPilot",
+      "properties": {
+        "SigmaPilot.maxTokenAmount": {
+          "type": "number",
+          "default": 256,
+          "description": "Max tokens for request. Using more tokens will result in longer wait times."
+        },
+        "SigmaPilot.enterApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Enter api key for LLM connection. Not necessary for local connections."
+        },
+        "SigmaPilot.enterUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Enter url for LLM connection."
+        },
+        "SigmaPilot.enterModelName": {
+          "type": "string",
+          "default": "",
+          "description": "Enter the name of the model you are using. For LM Studio, use local-model."
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "ai-reviewer-sidebar-view",
-          "title": "AI Reviewer",
-          "icon": "media/AI_Bot.svg"
+          "id": "sigma-pilot-sidebar-view",
+          "title": "SigmaPilot",
+          "icon": "media/AI_Bot.png"
         }
       ]
     },
     "views": {
-      "ai-reviewer-sidebar-view": [
+      "sigma-pilot-sidebar-view": [
         {
           "type": "webview",
-          "id": "ai-reviewer-sidebar",
-          "name": "AI Reviewer",
-          "icon": "media/AI_Bot.svg",
-          "contextualTitle": "AI Reviewer"
+          "id": "sigma-pilot-sidebar",
+          "name": "SigmaPilot",
+          "icon": "media/AI_Bot.png",
+          "contextualTitle": "SigmaPilot"
         }
       ]
     },
     "commands": [
       {
-        "command": "ai-reviewer.refresh",
-        "title": "Refresh"
+        "command": "sigma-pilot.refresh",
+        "title": "SigmaPilot: Refresh"
       },
       {
-        "command": "ai-reviewer.copySelectedCodeToSidebar",
-        "title": "Copy Selected Code to Sidebar"
+        "command": "sigma-pilot.copySelectedCodeToSidebar",
+        "title": "SigmaPilot: Copy Selected Code to Sidebar"
       },
       {
-        "command": "ai-reviewer.modelConnection",
-        "title": "Send message to model"
+        "command": "sigma-pilot.modelConnection",
+        "title": "SigmaPilot: Generate Response"
+      },
+      {
+        "command": "sigma-pilot.openSettings",
+        "title": "SigmaPilot: Open Settings"
       }
     ],
     "keybindings": [
       {
-        "command": "ai-reviewer.copySelectedCodeToSidebar",
+        "command": "sigma-pilot.copySelectedCodeToSidebar",
         "key": "ctrl+shift+c",
         "when": "editorTextFocus"
       },
       {
-        "command": "ai-reviewer.runQuickReview",
+        "command": "sigma-pilot.runQuickReview",
         "key": "ctrl+shift+q",
         "when": "editorTextFocus"
       }
@@ -68,41 +99,42 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "vscode-test"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@tsconfig/svelte": "^5.0.2",
-    "@types/mocha": "^10.0.3",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^18.19.14",
+    "@types/sinon": "^17.0.3",
     "@types/vscode": "^1.85.0",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vscode/test-cli": "^0.0.3",
     "@vscode/test-electron": "^2.3.6",
     "concurrently": "^8.2.2",
+    "css-loader": "^6.10.0",
     "eslint": "^8.52.0",
     "glob": "^10.3.10",
-    "mocha": "^10.2.0",
+    "mocha": "^10.4.0",
     "rollup": "^2.79.1",
     "rollup-plugin-svelte": "^6.1.1",
     "rollup-plugin-terser": "^7.0.2",
+    "sinon": "^17.0.1",
+    "style-loader": "^3.3.4",
     "svelte": "^4.2.9",
     "svelte-check": "^3.6.3",
+    "svelte-loader": "^3.1.9",
     "svelte-preprocess": "^5.1.3",
-    "ts-loader": "^9.5.0",
-    "typescript": "^5.2.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@types/body-parser": "^1.19.5",
-    "@types/express": "^4.17.21",
-    "axios": "^1.6.7",
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.4.1",
-    "express": "^4.18.2",
-    "openai": "^4.26.1"
+    "axios": "^1.6.8"
   }
 }

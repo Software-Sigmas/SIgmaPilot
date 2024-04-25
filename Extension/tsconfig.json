@@ -1,19 +1,16 @@
 {
 	"compilerOptions": {
-		"module": "Node16",
-		"target": "ES2022",
+		"module": "Node16", // Use "nodenext" if your TypeScript version supports it, for more accurate module resolution.
+		"target": "ESNext", // Targeting "ESNext" ensures you use the latest ECMAScript features.
 		"lib": [
-			"ES2022"
+			"ESNext" // This ensures you include definitions for the latest ECMAScript features.
 		],
 		"sourceMap": true,
 		"rootDir": "src",
-		"strict": true   /* enable all strict type-checking options */
-		/* Additional Checks */
-		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
+		"strict": true,
+		"esModuleInterop": true, // Enables compatibility with non-ES module packages.
+		"skipLibCheck": true // This can speed up compilation by skipping type checks for declaration files.
 	},
-
 	"exclude": [
 		"node_modules",
 		".vscode-test",

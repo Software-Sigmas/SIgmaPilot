@@ -1,89 +1,112 @@
 <script lang="ts">
-	// constants
-	const EFFICIENCY_PROMPT = 'Analyze for efficiency:\n';
-	const FORMATTING_PROMPT = 'Analyze for formatting:\n';
-	const EXPLANATION_PROMPT = 'Explain the code:\n';
-	const MAXHEIGHT = 200;
+	import {
+		EFFICIENCY_PROMPT,
+		FORMATTING_PROMPT,
+		EXPLANATION_PROMPT,
+		options,
+		resizeTextarea,
+	} from "./Constants";
 
-	let answer = '';
-	let prompt = '';
-	let code = '';
-	let selectedOption = '';
-	let isLoading = false; 
-
-
-	const options = ['Formatting', 'Efficiency', 'Explanation'];
-
-	// resize text area based on text amount
-	function resizeTextarea(event?: Event) {
-		let target: HTMLTextAreaElement;
-		if (event) {
-			target = event.target as HTMLTextAreaElement;
-		} else {
-			// Correctly select the textarea by its ID
-			target = document.getElementById('mytextarea') as HTMLTextAreaElement;
-		}
-		if (!target) return; // Exit if textarea is not found, for safety
-		target.style.height = 'auto';
-		target.style.height = `${Math.min(target.scrollHeight, MAXHEIGHT)}px`;
-	}
+	let answer = "";
+	let prompt = "";
+	let code = "";
+	let selectedOption = "";
+	let isLoading = false;
 
 	// recieve commands from webview
-	window.addEventListener('message', (event) => {
+	window.addEventListener("message", (event) => {
 		const message = event.data;
 		switch (message.command) {
-			case 'setCode':
-				code = message.code;
+			case "setCode":
+				code = message.data;
 				setTimeout(resizeTextarea, 0);
 				break;
-			case 'quickReview':
-				code = message.code;
-				prompt = '';
-				selectedOption = 'Explanation';
+			case "quickReview":
+				code = message.data;
+				prompt = "";
+				selectedOption = "Explanation";
 				setTimeout(resizeTextarea, 0);
 				generateResponse();
 				break;
-			case 'modelResponse':
-				answer = message.answer;
+			case "modelResponse":
+				answer = message.data;
 				isLoading = false;
+				break;
+			case "error":
+				if (message.data.includes("new request") ) {
+					answer = "";
+				} else {
+					isLoading = false;
+				}
+				break;
+			default:
 				break;
 		}
 	});
 
 	function generateResponse() {
-		let finalPrompt = 'Hello World';
+		let finalPrompt = "";
+
 		switch (selectedOption) {
-			case 'Formatting':
+			case "Formatting":
 				finalPrompt = FORMATTING_PROMPT;
 				break;
-			case 'Efficiency':
+			case "Efficiency":
 				finalPrompt = EFFICIENCY_PROMPT;
 				break;
-			case 'Explanation':
+			case "Explanation":
 				finalPrompt = EXPLANATION_PROMPT;
 				break;
-			case '':
-				finalPrompt = prompt + '\n';
+			case "":
+				finalPrompt = prompt + "\n";
 				break;
 			default:
 				finalPrompt = EXPLANATION_PROMPT;
 				break;
 		}
+		// do not allow communication with model without code or custom prompt.
+		if (selectedOption == "" && prompt == "") {
+			tsvscode.postMessage({
+				type: "onError",
+				value: "Please add custom prompt.",
+			});
+			return;
+		}
+
+		if (selectedOption != "" && code == "") {
+			tsvscode.postMessage({
+				type: "onError",
+				value: "Please add code.",
+			});
+			return;
+		}
+
 		finalPrompt = finalPrompt + code;
 		isLoading = true;
-		tsvscode.postMessage({ type: 'generateResponse', value: finalPrompt });
+		try {
+			tsvscode.postMessage({
+				type: "generateResponse",
+				value: finalPrompt,
+			});
+		} catch (e) {
+			isLoading = false;
+		}
 	}
 </script>
 
 <div>Custom Prompt:</div>
 
 <form on:submit|preventDefault={() => {}}>
-	<input bind:value={prompt} placeholder="Optional" disabled={selectedOption != ''} />
+	<input
+		bind:value={prompt}
+		placeholder="Optional"
+		disabled={selectedOption != ""}
+	/>
 </form>
 
 <div>Standard Prompt:</div>
 
-<select bind:value={selectedOption}>
+<select bind:value={selectedOption} class="select-vscode-style">
 	<option value="" selected>Use Custom Prompt</option>
 	{#each options as option}
 		<option value={option}>{option}</option>
@@ -93,7 +116,12 @@
 <div>Code:</div>
 
 <form on:submit|preventDefault={() => {}}>
-	<textarea id="mytextarea" bind:value={code} on:input={resizeTextarea} placeholder="Optional"></textarea>
+	<textarea
+		id="mytextarea"
+		bind:value={code}
+		on:input={resizeTextarea}
+		placeholder="Optional"
+	></textarea>
 </form>
 
 <button
@@ -108,16 +136,20 @@
 {#if isLoading}
 	<div class="loader"></div>
 {:else}
-	<div>{answer}</div>
+	<div id="answer">{answer}</div>
 {/if}
 
 <style>
 	textarea {
 		width: 100%;
-		box-sizing: border-box; /* Ensures padding does not affect overall width */
+		box-sizing: border-box;
 		overflow-y: auto;
-		resize: none; /* Disables manual resizing */
+		resize: none;
 		max-height: 200px;
+	}
+
+	input:disabled {
+		opacity: 20%;
 	}
 
 	.loader {
@@ -130,7 +162,40 @@
 	}
 
 	@keyframes spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.select-vscode-style {
+		width: 100%;
+		color: var(--vscode-foreground); /* Text color */
+		background-color: var(
+			--vscode-dropdown-background
+		); /* Dropdown background */
+		border: 1px solid var(--vscode-dropdown-border); /* Border color */
+		padding: 5px 10px; /* Adjust padding as needed */
+		font-size: var(--vscode-font-size); /* Match the font size */
+		border-radius: var(
+			--vscode-border-radius
+		); /* Optional: if VSCode variables provide this */
+		appearance: none; /* Removes default styling provided by browsers */
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		cursor: pointer;
+	}
+
+	.select-vscode-style {
+		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+		background-repeat: no-repeat;
+		background-position: right 10px center;
+		background-size: 12px;
+	}
+
+	#answer {
+		white-space: pre-wrap;
 	}
 </style>
