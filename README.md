@@ -35,14 +35,14 @@
 
 In the SigmaPilot project, selecting the right Local Language Model (LLM) was paramount to achieving high-quality code review capabilities within the Visual Studio Code (VSCode) environment. Our evaluation process was meticulously designed to identify the most suitable model based on several critical performance metrics.
 
-### Model Selection Process 🚀
+### 🚀 Model Selection Process 
 
 The selection began with a comprehensive review of available LLMs, focusing on those compatible with our performance and integration requirements for a VSCode extension. The evaluation involved:
 
 - **Initial Screening:** Over 60 models were considered, with a focus on those having less than 13 billion parameters to ensure smooth operation on typical development systems.
 - **Detailed Testing:** A subset of models was then subjected to detailed testing using a variety of coding tasks and programming languages.
 
-### Evaluation Criteria 📏
+### 📏 Evaluation Criteria 
 
 To objectively assess each model, we developed a set of evaluation criteria that included:
 
@@ -50,7 +50,7 @@ To objectively assess each model, we developed a set of evaluation criteria that
 - **Clarity:** The clarity and understandability of the model’s explanations and suggestions.
 - **Integration Capability:** Ease of integration with the VSCode environment and performance stability during extended use.
 
-### Experimental Setup 🧪
+### 🧪 Experimental Setup 
 
 The models were evaluated using a specific set of prompts designed to simulate real-world coding tasks. Here’s how we structured our experiments:
 
@@ -62,7 +62,7 @@ The models were evaluated using a specific set of prompts designed to simulate r
 - **Testing Environment:** Tests were conducted using LM Studio, allowing for controlled and consistent model interaction.
 - **Prompts Used:** A variety of prompts covering common programming tasks and languages were employed to thoroughly test each model's capabilities.
 
-### Results and Insights 📊
+### 📊 Results and Insights 
 
 Based on our evaluations, we selected the model that exhibited the best balance between accuracy, efficiency, and integration suitability. The chosen model demonstrated:
 
