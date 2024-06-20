@@ -1,6 +1,11 @@
 
 # Σ SigmaPilot
 
+## 🔗 [Final Report](./Documents/Final%20Report.pdf)
+ ## 🔗 [Project's Presentation](./Documents/SigmaPilot-Presentation.pdf)
+ ## 🔗 [Poster](./Documents/AI%20Code%20Reviewer%20Capstone%20Poster%20one%20page.pdf)
+
+
 ## Using Artificial Intelligence to Perform Reviews of Human Code
 
 ## 📕 Table of Contents
@@ -40,9 +45,7 @@
 
 ### Steps
 1. Clone the repository:
-   \`\`\`sh
-   git clone https://github.com/Software-Sigmas/SIgmaPilot.git
-   \`\`\`
+   ``` sh git clone https://github.com/Software-Sigmas/SIgmaPilot.git ```
 2. Navigate to the extension directory:
    \`\`\`sh
    cd SIgmaPilot
