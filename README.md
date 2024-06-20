@@ -9,7 +9,12 @@
 
 ## 📕 Table of Contents
 - [Introduction](#introduction)
-- [Features](#features)
+- [Model Evaluation and LLM Investigation](#model-evaluation-and-llm-investigation-)
+  - [Model Selection Process](#model-selection-process-)
+  - [Evaluation Criteria](#evaluation-criteria-)
+  - [Experimental Setup](#experimental-setup-)
+  - [Results and Insights](#results-and-insights-)
+- [Extension Features](#extension-features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
@@ -23,9 +28,57 @@
 
 ## Introduction
 
-🚀 **SigmaPilot** is a state-of-the-art Visual Studio Code (VSCode) extension designed to revolutionize the code review process by leveraging the power of Artificial Intelligence (AI). SigmaPilot enables developers to integrate seamlessly with both local and remote Large Language Models (LLMs) directly within their coding environment. By prioritizing user privacy, operational efficiency, and ease of use, SigmaPilot is set to transform the way developers review and enhance their code.
+🚀 **SigmaPilot** is a state-of-the-art Visual Studio Code (VSCode) extension designed to revolutionize the code review process by leveraging the power of Artificial Intelligence (AI). Beyond its functionality as a tool within the VSCode environment, SigmaPilot embodies a robust research initiative dedicated to exploring and identifying the most effective Large Language Models (LLMs) for code review applications. This dual focus ensures that SigmaPilot not only enhances the user experience through seamless integration with both local and remote LLMs but also upholds the highest standards of user privacy, operational efficiency, and ease of use. By merging cutting-edge technology with in-depth analytical research, SigmaPilot is set to transform how developers interact with, review, and enhance their code, making it an indispensable asset in the software development lifecycle.
 
-## Features
+
+## 🔍 Model Evaluation and LLM Investigation 
+
+In the SigmaPilot project, selecting the right Local Language Model (LLM) was paramount to achieving high-quality code review capabilities within the Visual Studio Code (VSCode) environment. Our evaluation process was meticulously designed to identify the most suitable model based on several critical performance metrics.
+
+### Model Selection Process 🚀
+
+The selection began with a comprehensive review of available LLMs, focusing on those compatible with our performance and integration requirements for a VSCode extension. The evaluation involved:
+
+- **Initial Screening:** Over 60 models were considered, with a focus on those having less than 13 billion parameters to ensure smooth operation on typical development systems.
+- **Detailed Testing:** A subset of models was then subjected to detailed testing using a variety of coding tasks and programming languages.
+
+### Evaluation Criteria 📏
+
+To objectively assess each model, we developed a set of evaluation criteria that included:
+
+- **Accuracy:** The correctness and relevance of the responses provided by the model for given code snippets.
+- **Clarity:** The clarity and understandability of the model’s explanations and suggestions.
+- **Integration Capability:** Ease of integration with the VSCode environment and performance stability during extended use.
+
+### Experimental Setup 🧪
+
+The models were evaluated using a specific set of prompts designed to simulate real-world coding tasks. Here’s how we structured our experiments:
+
+- **Figure 1: Model Evaluation Workflow**
+  ![Model Evaluation Workflow](./figures/Model_Evaluation_Workflow.svg)
+  
+  This diagram illustrates the step-by-step process we followed, from initial model screening to final selection.
+
+- **Testing Environment:** Tests were conducted using LM Studio, allowing for controlled and consistent model interaction.
+- **Prompts Used:** A variety of prompts covering common programming tasks and languages were employed to thoroughly test each model's capabilities.
+
+### Results and Insights 📊
+
+Based on our evaluations, we selected the model that exhibited the best balance between accuracy, efficiency, and integration suitability. The chosen model demonstrated:
+
+- **High Accuracy:** Excelling at both syntax correctness and logical coherence in code suggestions.
+- **Clear Explanations:** Providing concise and understandable explanations tailored for developers.
+- **Seamless Integration:** Demonstrating robust performance within the VSCode extension without significant resource overhead.
+
+**Figure 2: Model Performance Comparison**
+![Model Performance Comparison](./figures/evaluation-comparison.png)
+
+This chart compares the top-performing models across various evaluation metrics, highlighting the superior performance of our chosen model.
+
+By employing a rigorous evaluation framework, we ensured that SigmaPilot is equipped with a powerful and efficient LLM, ready to enhance the code review process for developers directly within their coding environment.
+
+
+## Extension Features
 
 ✨ **Key Features:**
 - **Seamless Integration:** Direct integration with VSCode.
