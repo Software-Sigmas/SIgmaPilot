@@ -1,12 +1,11 @@
 
 # Σ SigmaPilot
 
-## 🔗 [Final Report](./Documents/Final%20Report.pdf)
- ## 🔗 [Project's Presentation](./Documents/SigmaPilot-Presentation.pdf)
- ## 🔗 [Poster](./Documents/AI%20Code%20Reviewer%20Capstone%20Poster%20one%20page.pdf)
-
-
 ## Using Artificial Intelligence to Perform Reviews of Human Code
+
+### 🔗 [Final Report](./Documents/Final%20Report.pdf)
+ ### 🔗 [Project's Presentation](./Documents/SigmaPilot-Presentation.pdf)
+ ### 🔗 [Poster](./Documents/AI%20Code%20Reviewer%20Capstone%20Poster%20one%20page.pdf)
 
 ## 📕 Table of Contents
 - [Introduction](#introduction)
@@ -47,18 +46,12 @@
 1. Clone the repository:
    ``` sh git clone https://github.com/Software-Sigmas/SIgmaPilot.git ```
 2. Navigate to the extension directory:
-   \`\`\`sh
-   cd SIgmaPilot
-   \`\`\`
+   ```sh cd SIgmaPilot ```
 3. Install the dependencies:
-   \`\`\`sh
-   npm install
-   \`\`\`
+   ```sh npm install ```
 4. Open VSCode and start the extension:
-   \`\`\`sh
-   code .
-   \`\`\`
-5. Press \`F5\` to open a new VSCode window with the extension loaded.
+   ```sh code . ```
+5. Press `F5` to open a new VSCode window with the extension loaded.
 
 ## Usage
 
@@ -103,15 +96,11 @@
 
 ### Building the Extension
 To build the extension from source:
-\`\`\`sh
-npm run build
-\`\`\`
+```sh npm run build ```
 
 ### Running Tests
 To run tests:
-\`\`\`sh
-npm test
-\`\`\`
+```sh npm test ```
 
 ## Testing
 
@@ -134,9 +123,9 @@ npm test
 We welcome contributions to SigmaPilot! Please follow these steps to contribute:
 
 1. Fork the repository.
-2. Create a new branch (\`git checkout -b feature/YourFeature\`).
-3. Commit your changes (\`git commit -m 'Add some feature'\`).
-4. Push to the branch (\`git push origin feature/YourFeature\`).
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
 5. Create a new Pull Request.
 
 ## License
